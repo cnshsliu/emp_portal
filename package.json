@@ -1,0 +1,27 @@
+{
+  "name": "emp_portal",
+  "version": "1.0.0",
+  "description": "EMP Portal",
+  "private": true,
+  "scripts": {
+    "start": "parcel src/*.html --port 80",
+    "build": "parcel build src/*.html --no-source-maps --detailed-report"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "bootstrap": "latest",
+    "bootstrap-vue": "latest",
+    "jquery": "latest",
+    "jquery-ui-dist": "latest",
+    "short-uuid": "^4.1.0",
+    "vue": "latest",
+    "vue-mouse-menu": "^2.1.2"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.27.0"
+  },
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.common.js"
+  }
+}
