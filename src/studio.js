@@ -22,15 +22,21 @@ const app = new Vue({
     submittedNames: [],
     currentTpl: null,
     tpl_action: '',
+    justCreated: '',
   },
   components: {},
   computed: {},
   methods: {
+    list_refresh() {
+      Client.listTemplate().then((list) => {
+        app.templates = list;
+      });
+    },
     tpl_view(aTpl) {
       window.location.href = "/designer.html?tplid=" + aTpl._id + "&mode=view";
     },
     tpl_edit(aTpl) {
-      window.location.href = "/designer.html?tplid=" + aTpl._id + "&mode=view";
+      window.location.href = "/designer.html?tplid=" + aTpl._id + "&mode=edit";
     },
     tpl_rename(aTpl) {
       console.log("Rename " + aTpl._id);
@@ -75,7 +81,11 @@ const app = new Vue({
         })
     },
     tpl_create() {
-      console.log("create a new teamplte object, then goto designer");
+      //TODO: create a new teamplte object, then goto designer
+      this.inputName = '';
+      this.tpl_action = "create";
+      this.inputNameTitle = "The template name is:";
+      this.$root.$emit('bv::show::modal', 'modal-input-name');
     },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity()
@@ -94,9 +104,7 @@ const app = new Vue({
     },
     handleSubmit() {
       // Exit when the form isn't valid
-      console.log("handle submit", this.inputName);
       if (!this.checkFormValidity()) {
-        console.log("return");
         return
       }
       // Hide the modal manually
@@ -125,16 +133,52 @@ const app = new Vue({
             }, 0);
           }
         }
+      } else if (this.tpl_action === "create") {
+        let nameExist = false;
+        let theName = this.inputName;
+        for (let i = 0; i < this.templates.length; i++) {
+          if (this.templates[i].tplid === this.inputName) {
+            nameExist = true;
+            this.$bvToast.toast("名称已被占用", {title: "新建模板", variant: "warning", solid: true});
+          }
+        }
+        if (nameExist === false) {
+          this.resetModal();
+          setTimeout(async () => {
+            try {
+              let ret = await Client.createTemplate(theName);
+              app.justCreated = ret._id;
+              //Move justcreated to the first position
+              let tmp = await Client.listTemplate();
+              let justCreatedIndex = -1;
+              for (let i = 0; i < tmp.length; i++) {
+                if (tmp[i]._id === app.justCreated) {
+                  justCreatedIndex = i;
+                }
+              }
+              if (justCreatedIndex > 0) {
+                let a = tmp[0];
+                tmp[0] = tmp[justCreatedIndex];
+                tmp[justCreatedIndex] = a;
+              }
+              app.templates = tmp;
+              //Show first page
+              app.currentTemplatePage = 0;
+            } catch (error) {
+              console.log(error);
+              app.$bvToast.toast(`新建模板:${theName} 失败`, {title: "新建模板", variant: "warning", solid: true});
+            }
+          }, 0);
+        }
       }
     },
+
   },
 }).$mount("#app");
 
 setTimeout(async () => {
   Client.setSessionToken();
   app.templates = await Client.listTemplate();
-  console.log(app.templates);
-  console.log("Hello, world!");
 }, 0);
 
 setInterval(async () => {

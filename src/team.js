@@ -36,7 +36,7 @@ const app = new Vue({
   methods: {
     async team_edit(aObj) {
       console.log(aObj);
-      let obj = await Client.teamGetFullInfo(aObj._id);
+      let obj = await Client.getTeamFullInfo(aObj.teamid);
       this.team_inner_id = obj._id;
       this.team_inputName = obj.teamid;
       let tmp = "";
@@ -54,7 +54,7 @@ const app = new Vue({
     },
 
     async refresh_list() {
-      this.bobjects = await Client.teamGetList();
+      this.bobjects = await Client.getTeamList();
       this.showOverlay = false;
     },
     checkFormValidity() {

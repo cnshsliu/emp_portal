@@ -29,10 +29,10 @@ const Client = {
         },
 
         // `maxContentLength` defines the max size of the http response content in bytes allowed in node.js
-        maxContentLength: 2000,
+        maxContentLength: 20000,
 
         // `maxBodyLength` (Node only option) defines the max size of the http request content in bytes allowed
-        maxBodyLength: 2000,
+        maxBodyLength: 20000,
         maxRedirects: 3,
         /* httpAgent: new http.Agent({ keepAlive: true }),
          * httpsAgent: new https.Agent({ keepAlive: true }), */
@@ -46,23 +46,23 @@ const Client = {
         return ret.data;
     },
     _post: async function (uri, payload) {
-        try {
-            let res = await axios.post(uri, payload, Client.axiosOptions);
-            return res;
-        } catch (error) {
-            console.error(error.response.data.message);
-            return error.response;
+        let res = await axios.post(uri, payload, Client.axiosOptions);
+        if (res.data.error) {
+            throw new Error(res.data.errMsg);
         }
+        return res;
     },
     doGet: async function (uri) {
         let ret = Client._get(uri);
         return ret.data;
     },
+
     _get: async function (uri) {
-        //Client.axiosOptions.data = payload;
         try {
-            return await axios.get(uri, Client.axiosOptions);
+            let ret = await axios.get(uri, Client.axiosOptions);
+            return ret;
         } catch (error) {
+            console.error(error);
             return error.response;
         }
     },
@@ -78,9 +78,22 @@ const Client = {
         return res.data;
     },
 
+    createTemplate: async function (tplid) {
+        console.log("tplid: ", tplid);
+        let ret = await Client._post("/template/create", {tplid: tplid});
+        return ret.data;
+    },
+
     uploadTemplate: async function (tpl_data) {
         let ret = await Client._post("/template/upload", {
             doc: tpl_data,
+        });
+        return ret.data;
+    },
+
+    downloadTemplate: async function (tpl_id) {
+        let ret = await Client._post("/template/download", {
+            tplid: tpl_id,
         });
         return ret.data;
     },
@@ -97,9 +110,23 @@ const Client = {
         });
         return ret.data;
     },
+
+    /**
+     * return object {n: 1, deletedCount:1, ok:1}
+     */
     deleteTemplate: async function (_id) {
         let ret = await Client._post("/template/delete", {
             _id: _id,
+        });
+        return ret.data;
+    },
+
+    /**
+     * return object {n: 1, deletedCount:1, ok:1}
+     */
+    deleteTemplateByName: async function (tplid) {
+        let ret = await Client._post("/template/delete/byname", {
+            tplid: tplid,
         });
         return ret.data;
     },
@@ -110,10 +137,11 @@ const Client = {
         return ret.data;
     },
 
-    startWorkflow: async function (tplid, wfid) {
+    startWorkflow: async function (tplid, wfid, teamid) {
         let ret = await Client._post("/workflow/start", {
             tplid: tplid,
             wfid: wfid,
+            teamid: teamid
         });
         return ret.data;
     },
@@ -150,6 +178,11 @@ const Client = {
         let ret = await Client._post("/workflow/latest", {
             filter: filter,
         });
+        return ret.data;
+    },
+
+    destroyWorkflow: async function (wfid) {
+        let ret = await Client._post("/workflow/destroy", {wfid: wfid});
         return ret.data;
     },
 
@@ -237,19 +270,70 @@ const Client = {
 
     uploadTeam: async function (name, tmap) {
         let payload = {teamid: name, tmap: tmap};
-        console.log(payload);
         let ret = await Client._post("/team/upload", payload);
         return ret.data;
     },
 
-    teamGetFullInfo: async function (_id) {
-        let ret = await Client._get(`/team/fullinfo/${_id}`);
+    getTeamFullInfo: async function (teamid) {
+        let ret = await Client._get(`/team/fullinfo/${teamid}`);
         return ret.data;
     },
 
-    teamGetList: async function (filter, aSort) {
+    getTeamList: async function () {
         let ret = await Client._post("/team/list");
         return ret.data;
+    },
+
+    getCallbackPoints: async function (cbpFilter) {
+        let ret = await Client._post("/cbps", cbpFilter);
+        return ret.data;
+    },
+
+    getLatestCallbackPoint: async function (cbpFilter) {
+        let ret = await Client._post("/cbps/latest", cbpFilter);
+        return ret.data;
+    },
+
+    /**
+     *     callback: callback to workflow
+     *
+     * @param {...} cbp - Callback point
+     * @param {...} kvars - kvars to inject
+     * @param {...} atts - attachments to inject
+     *
+     * @return {...}
+     */
+    callback: async function (cbp, route, kvars, atts) {
+        let payload = {cbp: cbp};
+        if (typeof route === "string") {
+            payload.route = route;
+            if (kvars) {
+                payload.kvars = kvars;
+                if (atts) {
+                    payload.atts = atts;
+                }
+            }
+        } else if (typeof route === "object") {
+            payload.route = "DEFAULT";
+            payload.kvars = route;
+            if (kvars) {
+                payload.atts = kvars;
+            }
+        }
+        let ret = await Client._post("/callback", payload);
+        return ret.data;
+    },
+
+    deleteTeam: async function (name) {
+        let payload = {teamid: name};
+        let ret = await Client._post("/team/delete", payload);
+        return ret.data;
+    },
+
+    __checkError: function (ret) {
+        if (ret.errors) {
+            throw new Error(ret.errors);
+        }
     },
 
     register: async function (username, password, email, tenant) {
@@ -262,22 +346,6 @@ const Client = {
         });
         if (response.data && response.data.sessionToken) {
             Client.setHeader("authorization", response.data.sessionToken);
-        }
-        if (response.data && response.data.error) {
-            if (response.data.error.name === "MongoError") {
-                if (response.data.error.code === 11000) {
-                    let str = response.data.errMsg;
-                    if (str.indexOf("username") >= 0) {
-                        response.data.errMsg = "Duplicated user name";
-                    } else if (str.indexOf("email") >= 0) {
-                        response.data.errMsg = "Duplicated email";
-                    } else {
-                        response.data.errMsg = "Duplicated info";
-                    }
-                } else {
-                    response.data.errMsg = "Database error";
-                }
-            }
         }
         return response;
     },

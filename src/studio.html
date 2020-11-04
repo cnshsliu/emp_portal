@@ -43,11 +43,12 @@
         </b-navbar>
         <b-card title="Template Console" body-class="text-center">
             <b-card-text class="text-info">
-                A HyperFlow template defines works/tasks and the routing among them, as well as which role or system or
-                a remote IoT device should be revoked to complete a work or task. You, the administrator, define and
+                A HyperFlow template defines works/tasks and the routing among them,</br>as well as which role or system
+                or a remote IoT device should be assinged the work or task.</br>You, the administrator, define and
                 manage templates on this page, click the IDs of exiting templates to find more.
             </b-card-text>
             <b-button variant="success" @click="tpl_create">Design a new template</b-button>
+            <b-button variant="success" @click="list_refresh">Refresh</b-button>
         </b-card>
         <b-container class="mt-3">
             <b-table striped hover id="template-table" :items="templates" :per-page="perPage"
@@ -56,6 +57,9 @@
                     <b-dropdown variant="link" toggle-class="text-decoration-none" no-caret>
                         <template #button-content>
                             {{aObj.item.tplid?aObj.item.tplid:"UNKNOWN"}}
+                            <b-badge variant="success" pill v-if="aObj.item._id === justCreated">
+                                <b-icon icon="star-fill" />
+                            </b-badge>
                         </template>
                         <b-dropdown-item @click="tpl_view(aObj.item)">查看</b-dropdown-item>
                         <b-dropdown-item @click="tpl_edit(aObj.item)">编辑</b-dropdown-item>
