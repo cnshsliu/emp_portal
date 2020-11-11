@@ -16,6 +16,24 @@ $bv-enable-table-stacked: false;
 // @import '~bootstrap/scss/bootstrap';
 // @import '../node_modules/bootstrap-vue/dist/bootstrap-vue.min.css';
 // @import '../node_modules/bootstrap-vue/dist/bootstrap-vue-icons.min.css';
+@import "../../node_modules/jquery-ui-dist/jquery-ui.css";
+// @import 'filepond/dist/filepond.min.css';
+// @import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 // General style overrides and custom classes
 
+body {
+  margin: 0;
+}
+
+.my-widget {
+  color: var(--danger);
+}
+
+.favicon {
+  background: url('../favicon.png');
+}
+.invalid-feedback{
+  color: black !important;
+  font-size: 14px !important;
+}

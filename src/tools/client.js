@@ -47,6 +47,9 @@ const Client = {
     },
     _post: async function (uri, payload) {
         let res = await axios.post(uri, payload, Client.axiosOptions);
+        if (this.isEmpty(res.data)) {
+            throw new Error(`API Server return ${res.data}`);
+        }
         if (res.data.error) {
             throw new Error(res.data.errMsg);
         }

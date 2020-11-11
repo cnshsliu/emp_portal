@@ -15,7 +15,12 @@
     "jquery-ui-dist": "latest",
     "short-uuid": "^4.1.0",
     "vue": "latest",
-    "vue-mouse-menu": "^2.1.2"
+    "vue-mouse-menu": "^2.1.2",
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
+    "@msrvida/sanddance-vue": "^3",
+    "@luma.gl/core": "^8.1.2",
+    "vega": "^5.11"
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.1",

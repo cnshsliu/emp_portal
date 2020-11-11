@@ -13,7 +13,7 @@ MiniMap.scroller = null;
 MiniMap.window = null;
 MiniMap.KFK = null;
 
-MiniMap.minimap = function (minimapDiv, KFK) {
+MiniMap.minimap = function(minimapDiv, KFK) {
   MiniMap.window = $(window);
   MiniMap.theDIV = minimapDiv;
   MiniMap.KFK = KFK;
@@ -30,10 +30,9 @@ MiniMap.minimap = function (minimapDiv, KFK) {
   MiniMap.theDIV.on("mousedown touchstart", MiniMap.down);
   MiniMap.KFK.JC3.on("refreshC3", MiniMap.init);
   MiniMap.KFK.JC3.on("zoomC3", MiniMap.synchronize);
-  MiniMap.KFK.JC3.on("changedC3", MiniMap.synchronize);
 };
 
-MiniMap.down = function (e) {
+MiniMap.down = function(e) {
   var moveEvent, upEvent;
   var pos = MiniMap.theDIV.position();
   MiniMap.KFK.minimapMouseDown = true;
@@ -53,7 +52,7 @@ MiniMap.down = function (e) {
   MiniMap.window.on(upEvent, MiniMap.up);
 };
 
-MiniMap.move = function (e) {
+MiniMap.move = function(e) {
   e.preventDefault();
 
   if (e.type.match(/touch/)) {
@@ -99,12 +98,12 @@ MiniMap.move = function (e) {
   MiniMap.redraw();
 };
 
-MiniMap.up = function () {
+MiniMap.up = function() {
   MiniMap.KFK.minimapMouseDown = false;
   MiniMap.window.off(".minimapDown");
 };
 
-MiniMap.synchronize = function () {
+MiniMap.synchronize = function() {
   var dims = [MiniMap.scroller.width(), MiniMap.scroller.height()];
   var scroll = [MiniMap.scroller.scrollLeft(), MiniMap.scroller.scrollTop()];
   var scaleX =
@@ -131,7 +130,7 @@ MiniMap.synchronize = function () {
   MiniMap.redraw();
 };
 
-MiniMap.redraw = function () {
+MiniMap.redraw = function() {
   MiniMap.viewport.css({
     width: MiniMap.w,
     height: MiniMap.h,
@@ -140,8 +139,7 @@ MiniMap.redraw = function () {
   });
 };
 
-MiniMap.init = function () {
-  console.log("HAHAHA, GOT INIT");
+MiniMap.init = function() {
   MiniMap.theDIV.find(".minimap-node").remove();
   //creating mini version of the supplied children
   var ratioX =
@@ -152,9 +150,9 @@ MiniMap.init = function () {
     MiniMap.minimapWidth / (MiniMap.KFK.JC3.width() / MiniMap.KFK.scaleRatio);
   var ratioY1 =
     MiniMap.minimapHeight / (MiniMap.KFK.JC3.height() / MiniMap.KFK.scaleRatio);
-  MiniMap.KFK.JC3.children().each(function (index, anode) {
+  MiniMap.KFK.JC3.children().each(function(index, anode) {
     var $child = $(this);
-    if ($child.hasClass("node")) {
+    if ($child.hasClass("kfknode")) {
       var mini = $("<div></div>").addClass("minimap-node");
       MiniMap.theDIV.append(mini);
 

@@ -33,10 +33,10 @@ const app = new Vue({
       });
     },
     tpl_view(aTpl) {
-      window.location.href = "/designer.html?tplid=" + aTpl._id + "&mode=view";
+      window.location.href = "/lkh.html?tplid=" + encodeURI(aTpl.tplid) + "&mode=view";
     },
     tpl_edit(aTpl) {
-      window.location.href = "/designer.html?tplid=" + aTpl._id + "&mode=edit";
+      window.location.href = "/lkh.html?tplid=" + encodeURI(aTpl.tplid) + "&mode=edit";
     },
     tpl_rename(aTpl) {
       console.log("Rename " + aTpl._id);
@@ -177,8 +177,7 @@ const app = new Vue({
 }).$mount("#app");
 
 setTimeout(async () => {
-  Client.setSessionToken();
-  app.templates = await Client.listTemplate();
+  Client.setSessionToken(); app.templates = await Client.listTemplate();
 }, 0);
 
 setInterval(async () => {

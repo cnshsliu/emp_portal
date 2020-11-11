@@ -1,17 +1,8 @@
 //import events from "events";
 import "./scss/custom.scss";
-import KFK from "./console";
-import messages from "./lang";
-import ACM from "./accountmanage";
-import EXP from "./explorermanage";
-import Validator from "./validator";
-
-const Foo = {
-  template: "<div>foo</div>",
-};
-const Bar = {
-  template: "<div>bar</div>",
-};
+import KFK from "./KFK";
+import messages from "./i18messages";
+import {NodeController} from "./nodeController";
 
 let locale = navigator.language || navigator.userLanguage;
 if (["zh-CN"].indexOf(locale) < 0) {
@@ -63,8 +54,6 @@ const app = new Vue({
     RegUserIdState: null,
     RegUserNameState: null,
     KFK: KFK,
-    ACM: ACM,
-    EXP: EXP,
     seen: true,
     modalShow: false,
     modal_title: "",
@@ -691,16 +680,10 @@ const app = new Vue({
         showgrid: true,
         showlock: true,
         showbounding: true,
-        enterWithChat: false,
-        enterToConfirmInput: false,
-        useAI: true,
         showEditor: "last",
         nodemessage: true,
         autoFollow: true,
         autoLayout: true,
-        simpleLineMode: false,
-        autoRight: false,
-        hideRight: true,
         docAcl: 0,
         drawOnTop: true,
       },
@@ -846,6 +829,7 @@ const app = new Vue({
       if (this.images && this.images[img]) {
         return this.images[img].src;
       } else {
+        console.log("Return image undefined");
         return undefined;
       }
     },
@@ -916,8 +900,8 @@ const app = new Vue({
   },
 }).$mount("#app");
 
-DocController.KFK = KFK;
-KFK.DocController = DocController;
+NodeController.KFK = KFK;
+KFK.NodeController = NodeController;
 window.Buffer = window.Buffer || require("buffer").Buffer;
 KFK.APP = app;
 app.model.endpoint = KFK.config.ws_server.endpoint.label;
@@ -979,3 +963,5 @@ window.addEventListener("drop", async function (e) {
 });
 
 KFK.init();
+KFK.APP = app;
+

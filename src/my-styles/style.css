@@ -2399,3 +2399,41 @@ a:hover {
 .tabbg {
     background-color: #d2e1ef;
 }
+
+.node.START{
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
+.node.ACTION{
+    position: absolute;
+    left: 300px;
+    top: 100px;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
+.node.SCRIPT{
+    position: absolute;
+    left: 400px;
+    top: 300px;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+.node.END{
+    position: absolute;
+    left: 800px;
+    top: 300px;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}

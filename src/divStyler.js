@@ -1,6 +1,6 @@
 const DivStyler = {};
 DivStyler.styleCache = {};
-import KFK from "./console";
+import KFK from "./KFK";
 
 DivStyler.NodeOuterStyleNames = [
   "background-color",
@@ -20,7 +20,7 @@ DivStyler.NodeInnerStyleNames = [
   "font-weight",
   "font-style",
 ];
-DivStyler.copyStyle = function() {
+DivStyler.copyStyle = function () {
   let div = KFK.getHoverFocusLastCreate();
   if (!div) return;
   let innerDiv = div.find(".innerobj");
@@ -38,10 +38,10 @@ DivStyler.copyStyle = function() {
   );
 };
 
-DivStyler.pasteStyle = async function() {
+DivStyler.pasteStyle = async function () {
   if (!DivStyler.styleCache.nodetype) return;
   try {
-    await KFK.updateSelectedDIVs("paste style", async function(div) {
+    await KFK.updateSelectedDIVs("paste style", async function (div) {
       let innerDiv = div.find(".innerobj");
       let myNodeType = div.attr("nodetype");
       if (myNodeType === DivStyler.styleCache.nodetype) {
@@ -68,9 +68,9 @@ DivStyler.pasteStyle = async function() {
   }
 };
 
-DivStyler.fontSmaller = async function() {
+DivStyler.fontSmaller = async function () {
   try {
-    await KFK.updateSelectedDIVs("font smaller", async function(div) {
+    await KFK.updateSelectedDIVs("font smaller", async function (div) {
       let innerDiv = div.find(".innerobj");
       let fontSize = innerDiv.css("font-size");
       if (!fontSize) fontSize = "18px";
@@ -83,9 +83,9 @@ DivStyler.fontSmaller = async function() {
     console.error(error);
   }
 };
-DivStyler.fontBigger = async function() {
+DivStyler.fontBigger = async function () {
   try {
-    await KFK.updateSelectedDIVs("font smaller", async function(div) {
+    await KFK.updateSelectedDIVs("font smaller", async function (div) {
       let innerDiv = div.find(".innerobj");
       let fontSize = innerDiv.css("font-size");
       if (!fontSize) fontSize = "18px";
@@ -98,11 +98,11 @@ DivStyler.fontBigger = async function() {
     console.error(error);
   }
 };
-DivStyler.vertSizeSmaller = async function(delta) {
+DivStyler.vertSizeSmaller = async function (delta) {
   try {
     let divNum = await KFK.updateSelectedDIVs(
       "set border width",
-      async function(div) {
+      async function (div) {
         let nodeType = div.attr("nodetype");
         let tmpTop = KFK.divTop(div);
         let tmpHeight = KFK.divHeight(div);
@@ -130,11 +130,11 @@ DivStyler.vertSizeSmaller = async function(delta) {
   }
 };
 
-DivStyler.horiSizeBigger = async function(delta) {
+DivStyler.horiSizeBigger = async function (delta) {
   try {
     let divNum = await KFK.updateSelectedDIVs(
       "set border width",
-      async function(div) {
+      async function (div) {
         let tmpLeft = KFK.divLeft(div);
         let tmpWidth = KFK.divWidth(div);
         tmpLeft = tmpLeft - delta;
@@ -154,11 +154,11 @@ DivStyler.horiSizeBigger = async function(delta) {
     console.error(error);
   }
 };
-DivStyler.horiSizeSmaller = async function(delta) {
+DivStyler.horiSizeSmaller = async function (delta) {
   try {
     let divNum = await KFK.updateSelectedDIVs(
       "set border width",
-      async function(div) {
+      async function (div) {
         let nodeType = div.attr("nodetype");
         let tmpLeft = KFK.divLeft(div);
         let tmpWidth = KFK.divWidth(div);
@@ -185,11 +185,11 @@ DivStyler.horiSizeSmaller = async function(delta) {
     console.error(error);
   }
 };
-DivStyler.vertSizeBigger = async function(delta) {
+DivStyler.vertSizeBigger = async function (delta) {
   try {
     let divNum = await KFK.updateSelectedDIVs(
       "set border width",
-      async function(div) {
+      async function (div) {
         let tmpTop = KFK.divTop(div);
         let tmpHeight = KFK.divHeight(div);
         tmpTop = tmpTop - delta;
@@ -209,13 +209,13 @@ DivStyler.vertSizeBigger = async function(delta) {
     console.error(error);
   }
 };
-DivStyler.moveDivByArrowKey = async function(keyCode, ctrlKey) {
+DivStyler.moveDivByArrowKey = async function (keyCode, ctrlKey) {
   let refDiv = KFK.getHoverFocusLastCreate();
   refDiv && (KFK.divStylerRefDiv = refDiv);
   if (KFK.divStylerRefDiv) {
     let divNum = await KFK.updateSelectedDIVs(
       "move by keyboard",
-      async function(div) {
+      async function (div) {
         let tmpTop = KFK.divTop(div);
         let tmpLeft = KFK.divLeft(div);
         let newTop = tmpTop;
@@ -279,18 +279,18 @@ DivStyler.moveDivByArrowKey = async function(keyCode, ctrlKey) {
   }
 };
 
-DivStyler.moveDivByDelta = async function(div, deltaX, deltaY) {
+DivStyler.moveDivByDelta = async function (div, deltaX, deltaY) {
   await DivStyler.moveDivTo(
     div,
     KFK.divLeft(div) + deltaX,
     KFK.divTop(div) + deltaY
   );
 };
-DivStyler.moveDivTo = async function(div, toX, toY) {
+DivStyler.moveDivTo = async function (div, toX, toY) {
   div.css("left", toX);
   div.css("top", toY);
 };
-DivStyler.snapToGrid = function(jq) {
+DivStyler.snapToGrid = function (jq) {
   let tmpLeft = KFK.divLeft(jq);
   let tmpTop = KFK.divTop(jq);
   let newLeft = tmpLeft;
@@ -311,17 +311,17 @@ DivStyler.snapToGrid = function(jq) {
       (Math.floor(tmpTop / KFK.APP.model.gridWidth) + 1) *
       KFK.APP.model.gridWidth;
   }
-  return { x: newLeft, y: newTop };
+  return {x: newLeft, y: newTop};
 };
 
-DivStyler.zoom = async function(direction, shapeToZoom, delta) {
+DivStyler.zoom = async function (direction, shapeToZoom, delta) {
   try {
     DivStyler.zoomShape(shapeToZoom, direction, delta);
   } catch (error) {
     console.error(error);
   }
 };
-DivStyler.zoomShape = async function(shape, direction, delta) {
+DivStyler.zoomShape = async function (shape, direction, delta) {
   // let cpt = { x: shape.cx(), y: shape.cy() };
   // let rect = { w: shape.width(), h: shape.height() };
   // rect.w += delta;
@@ -338,7 +338,7 @@ DivStyler.zoomShape = async function(shape, direction, delta) {
 /**
  * 对shape边框进行横向和纵向扩展
  */
-DivStyler.resizeShape = async function(shape, direction, delta) {
+DivStyler.resizeShape = async function (shape, direction, delta) {
   let sType = DivStyler.shapeType(shape);
   let smallIndex = -1;
   let bigIndex = -1;
@@ -435,7 +435,7 @@ DivStyler.resizeShape = async function(shape, direction, delta) {
     shape.center(cpt.x, cpt.y);
   }
 };
-DivStyler.shapeType = function(shape) {
+DivStyler.shapeType = function (shape) {
   let ret = "line";
   if (shape.hasClass("kfkline")) {
     ret = "line";
@@ -452,8 +452,8 @@ DivStyler.shapeType = function(shape) {
   }
   return ret;
 };
-DivStyler.alignInnerContent = async function(keyCode) {
-  let divNum = await KFK.updateSelectedDIVs("set border width", async function(
+DivStyler.alignInnerContent = async function (keyCode) {
+  let divNum = await KFK.updateSelectedDIVs("set border width", async function (
     div
   ) {
     let divInner = div.find(".innerobj");
@@ -487,7 +487,7 @@ DivStyler.alignInnerContent = async function(keyCode) {
   });
 };
 
-DivStyler.arrangeNodes = async function(direction) {
+DivStyler.arrangeNodes = async function (direction) {
   if (KFK.selectedDIVs.length < 2) return;
   let hasOneLocked = false;
   KFK.selectedDIVs.forEach((aJQ) => {
@@ -514,7 +514,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("left", left);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["left"];
           }
         }
@@ -531,7 +531,7 @@ DivStyler.arrangeNodes = async function(direction) {
               "left",
               centerX - KFK.divWidth(KFK.selectedDIVs[i]) * 0.5
             );
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["left"];
           }
         }
@@ -547,7 +547,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("left", right - KFK.divWidth(KFK.selectedDIVs[i]));
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["left"];
           }
         }
@@ -563,7 +563,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("top", top);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["top"];
           }
         }
@@ -581,7 +581,7 @@ DivStyler.arrangeNodes = async function(direction) {
               "top",
               centerY - KFK.divHeight(KFK.selectedDIVs[i]) * 0.5
             );
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["top"];
           }
         }
@@ -598,7 +598,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("top", bottom - KFK.divHeight(KFK.selectedDIVs[i]));
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["top"];
           }
         }
@@ -651,7 +651,7 @@ DivStyler.arrangeNodes = async function(direction) {
           if (KFK.anyLocked(jqDIV) === false) {
             //重设其位置
             jqDIV.css("left", newLeft);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["left"];
           }
 
@@ -703,7 +703,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("top", newTop);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["top"];
           }
           posY = newTop + KFK.divHeight(tmpVertArr[index]);
@@ -718,7 +718,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("width", theWidth);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["width"];
           }
         }
@@ -730,7 +730,7 @@ DivStyler.arrangeNodes = async function(direction) {
           let jqOld = jqDIV.clone();
           if (KFK.anyLocked(jqDIV) === false) {
             jqDIV.css("height", theHeight);
-            jqs.push({ from: jqOld, to: jqDIV });
+            jqs.push({from: jqOld, to: jqDIV});
             propString = ["height"];
           }
         }

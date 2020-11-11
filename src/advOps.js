@@ -1,7 +1,7 @@
 const AdvOps = {};
 AdvOps.styleCache = {};
-import { merge } from "jquery";
-import KFK from "./console";
+import {merge} from "jquery";
+import KFK from "./KFK";
 
 AdvOps.treeMap = new Map();
 AdvOps.spaceMap = new Map();
@@ -12,9 +12,9 @@ AdvOps.RIGHT_SIDE = 1;
 AdvOps.LEFT_SIDE = -1;
 
 /* 获得一个DIV位于哪个页面上 */
-AdvOps.getDivPage = function(div) {
+AdvOps.getDivPage = function (div) {
   let onPage = -1;
-  let myCenter = { x: KFK.divCenter(div), y: KFK.divMiddle(div) };
+  let myCenter = {x: KFK.divCenter(div), y: KFK.divMiddle(div)};
   for (let i = 0; i < KFK.pageBounding.Pages.length; i++) {
     if (
       myCenter.x >= KFK.pageBounding.Pages[i].left &&
@@ -29,7 +29,7 @@ AdvOps.getDivPage = function(div) {
   return onPage;
 };
 
-AdvOps.onPage1 = function(jq, delta={x:0,y:0}) {
+AdvOps.onPage1 = function (jq, delta = {x: 0, y: 0}) {
   let p1Rect = {
     left: 0,
     top: 0,
@@ -59,10 +59,10 @@ AdvOps.onPage1 = function(jq, delta={x:0,y:0}) {
 };
 
 /* 获得一个图形处于哪个页面上 */
-AdvOps.getShapePage = function(shape) {
+AdvOps.getShapePage = function (shape) {
   let onPage = -1;
   let rect = KFK.getShapeRect(shape);
-  let myCenter = { x: rect.center, y: rect.middle };
+  let myCenter = {x: rect.center, y: rect.middle};
   for (let i = 0; i < KFK.pageBounding.Pages.length; i++) {
     if (
       myCenter.x >= KFK.pageBounding.Pages[i].left &&
@@ -78,7 +78,7 @@ AdvOps.getShapePage = function(shape) {
 };
 
 /* 移动单个对象到指定的页面 */
-AdvOps.moveSingleElement = async function(pindex) {
+AdvOps.moveSingleElement = async function (pindex) {
   let div = KFK.hoverJqDiv();
   if (div) {
     AdvOps.moveSingleDiv(div, pindex);
@@ -91,7 +91,7 @@ AdvOps.moveSingleElement = async function(pindex) {
 };
 
 /* 移动单个DIV到指定页面 */
-AdvOps.moveSingleDiv = async function(div, pindex) {
+AdvOps.moveSingleDiv = async function (div, pindex) {
   // 获得div所在的原始页面
   let onPage = AdvOps.getDivPage(div);
   if (onPage === pindex) {
@@ -110,7 +110,7 @@ AdvOps.moveSingleDiv = async function(div, pindex) {
   KFK.scrollToNode(div);
 };
 
-AdvOps.moveSingleShape = async function(aShape, pindex) {
+AdvOps.moveSingleShape = async function (aShape, pindex) {
   let onPage = AdvOps.getShapePage(aShape);
   if (onPage === pindex) {
     console.log("move to the same page, just return");
@@ -135,7 +135,7 @@ AdvOps.moveSingleShape = async function(aShape, pindex) {
   KFK.scrollToShape(aShape);
 };
 
-AdvOps.moveAllElements = async function(pindex) {
+AdvOps.moveAllElements = async function (pindex) {
   let div = KFK.hoverJqDiv();
   let shape = KFK.hoverSvgLine();
   let onPage = -1;
@@ -156,7 +156,7 @@ AdvOps.moveAllElements = async function(pindex) {
     let samePageDIVsCount = 0;
     allnodes.each(async (index, aDIV) => {
       let jqDIV = $(aDIV);
-      let theCenter = { x: KFK.divCenter(jqDIV), y: KFK.divMiddle(jqDIV) };
+      let theCenter = {x: KFK.divCenter(jqDIV), y: KFK.divMiddle(jqDIV)};
       if (
         theCenter.x >= KFK.pageBounding.Pages[onPage].left &&
         theCenter.x < KFK.pageBounding.Pages[onPage].left + KFK.PageWidth &&
@@ -173,7 +173,7 @@ AdvOps.moveAllElements = async function(pindex) {
     allShapes.each(async (index, aShapeDIV) => {
       let aShape = SVG(aShapeDIV);
       let aShapeRect = KFK.getShapeRect(aShape);
-      let theCenter = { x: aShapeRect.center, y: aShapeRect.middle };
+      let theCenter = {x: aShapeRect.center, y: aShapeRect.middle};
       if (
         theCenter.x >= KFK.pageBounding.Pages[onPage].left &&
         theCenter.x < KFK.pageBounding.Pages[onPage].left + KFK.PageWidth &&
@@ -188,7 +188,7 @@ AdvOps.moveAllElements = async function(pindex) {
     let samePageIndex = 0;
     allnodes.each(async (index, aDIV) => {
       let jqDIV = $(aDIV);
-      let theCenter = { x: KFK.divCenter(jqDIV), y: KFK.divMiddle(jqDIV) };
+      let theCenter = {x: KFK.divCenter(jqDIV), y: KFK.divMiddle(jqDIV)};
       if (
         theCenter.x >= KFK.pageBounding.Pages[onPage].left &&
         theCenter.x < KFK.pageBounding.Pages[onPage].left + KFK.PageWidth &&
@@ -224,7 +224,7 @@ AdvOps.moveAllElements = async function(pindex) {
     allShapes.each(async (index, aShapeDIV) => {
       let aShape = SVG(aShapeDIV);
       let aShapeRect = KFK.getShapeRect(aShape);
-      let theCenter = { x: aShapeRect.center, y: aShapeRect.middle };
+      let theCenter = {x: aShapeRect.center, y: aShapeRect.middle};
       if (
         theCenter.x >= KFK.pageBounding.Pages[onPage].left &&
         theCenter.x < KFK.pageBounding.Pages[onPage].left + KFK.PageWidth &&
@@ -263,7 +263,7 @@ AdvOps.moveAllElements = async function(pindex) {
   else if (shape) KFK.scrollToShape(shape);
 };
 
-AdvOps.getChildren = async function(jqNode) {
+AdvOps.getChildren = async function (jqNode) {
   let children = [];
   let childrenIds = KFK.getNodeLinkIds(jqNode, "linkto");
   for (let i = 0; i < childrenIds.length; i++) {
@@ -273,7 +273,7 @@ AdvOps.getChildren = async function(jqNode) {
   return children;
 };
 
-AdvOps.uniquefyKfkObjectArray = function(array) {
+AdvOps.uniquefyKfkObjectArray = function (array) {
   let tmp = [];
   for (let i = 0; i < array.length; i++) {
     let found = false;
@@ -298,7 +298,7 @@ AdvOps.uniquefyKfkObjectArray = function(array) {
  *
  * @param {} arr
  */
-AdvOps.findMost3 = function(arr) {
+AdvOps.findMost3 = function (arr) {
   let maxElem = null,
     maxNum = 0;
   let obj = arr.reduce((p, k) => {
@@ -310,10 +310,10 @@ AdvOps.findMost3 = function(arr) {
 
     return p;
   }, {});
-  return { elem: maxElem, num: maxNum, sorted: obj };
+  return {elem: maxElem, num: maxNum, sorted: obj};
 };
 
-AdvOps.existsInGroup = function(group, div) {
+AdvOps.existsInGroup = function (group, div) {
   for (let i = 0; i < group.length; i++) {
     if (group[i].attr("id") === div.attr("id")) {
       return true;
@@ -322,7 +322,7 @@ AdvOps.existsInGroup = function(group, div) {
   return false;
 };
 
-AdvOps.getDescendants = async function(root, aParent, descendants) {
+AdvOps.getDescendants = async function (root, aParent, descendants) {
   let directChildren = await AdvOps.getChildren(aParent);
   let clearedDirectChildren = [];
   for (let i = 0; i < directChildren.length; i++) {
@@ -341,7 +341,7 @@ AdvOps.getDescendants = async function(root, aParent, descendants) {
   }
 };
 
-AdvOps.collapseDescendants = async function(jqNode) {
+AdvOps.collapseDescendants = async function (jqNode) {
   let descendants = [];
   await AdvOps.getDescendants(jqNode, jqNode, descendants);
   for (let i = 0; i < descendants.length; i++) {
@@ -357,7 +357,7 @@ AdvOps.collapseDescendants = async function(jqNode) {
  * jqNode - the node whose descendants to expand
  * ALOE - true|false, Auto Layout On Expand
  */
-AdvOps.expandDescendants = async function(jqNode) {
+AdvOps.expandDescendants = async function (jqNode) {
   let descendants = [];
   await AdvOps.getDescendants(jqNode, jqNode, descendants);
   for (let i = 0; i < descendants.length; i++) {
@@ -377,7 +377,7 @@ AdvOps.expandDescendants = async function(jqNode) {
  * *
  *  jqNode - 从这个节点开始遍历
  */
-AdvOps.traverseTree = async function(jqNode, rootId) {
+AdvOps.traverseTree = async function (jqNode, rootId) {
   let myId = jqNode.attr("id");
   AdvOps.traverseLog.add(myId);
   let children = await AdvOps.getChildren(jqNode);
@@ -417,7 +417,7 @@ AdvOps.traverseTree = async function(jqNode, rootId) {
   }
 };
 
-KFK.text = function(jq) {
+KFK.text = function (jq) {
   return jq.find(".innerobj").text();
 };
 
@@ -427,7 +427,7 @@ KFK.text = function(jq) {
  * myId - 当前节点的ID
  * myHeight - 我的高度
  */
-AdvOps.reverseAddSpace = async function(rootId, myId, myHeight) {
+AdvOps.reverseAddSpace = async function (rootId, myId, myHeight) {
   if (AdvOps.treeMap.has(myId)) {
     let parentId = AdvOps.treeMap.get(myId);
     let tmp1 = AdvOps.spaceMap.get(parentId);
@@ -445,7 +445,7 @@ AdvOps.reverseAddSpace = async function(rootId, myId, myHeight) {
  * 自动放置每个子节点的位置
  *
  */
-AdvOps.placeChildrenAuto = async function(
+AdvOps.placeChildrenAuto = async function (
   jqNode,
   nodeSpace,
   whichSide,
@@ -494,7 +494,7 @@ AdvOps.placeChildrenAuto = async function(
   KFK.redrawLinkLines(jqNode);
 };
 
-AdvOps.buildGlobalTreeMap = async function() {
+AdvOps.buildGlobalTreeMap = async function () {
   AdvOps.globalTreeMap.clear();
   AdvOps.globalNodeMap.clear();
   let tmp = new Set();
@@ -516,7 +516,7 @@ AdvOps.buildGlobalTreeMap = async function() {
   });
 };
 
-AdvOps.getRootId = function(nodeId) {
+AdvOps.getRootId = function (nodeId) {
   if (AdvOps.globalTreeMap.has(nodeId)) {
     return AdvOps.getRootId(AdvOps.globalTreeMap.get(nodeId));
   } else {
@@ -531,7 +531,7 @@ AdvOps.getRootId = function(nodeId) {
  * rootId - jqNode所在的数的根节点，可能是jqNode自身，也可能是jqNode的祖先节点
  * rebuildGlobalTreeMap - 是否重建全局节点-父节点映射表。画板没有变化时，全局映射表只需要建立一次，不需要多次建立，因为每一次构建都需要扫描所有节点，是一个浪费时间的计算过程。同时，意味着，在调用本方法时，至少需要构建一次GTM，要么在调用本方法之前，预先调用AdvOps.buildGlobalTreeMap一次，要么在第一次调用本方法时，本参数为true
  */
-AdvOps.autoLayoutDescendants = async function(
+AdvOps.autoLayoutDescendants = async function (
   jqNode,
   rootId = "UNSET",
   rebuildGlobalTreeMap = true
@@ -626,7 +626,7 @@ AdvOps.autoLayoutDescendants = async function(
   }
 };
 
-AdvOps.autoLayoutOnNewNode = async function(newNode, parentNode) {
+AdvOps.autoLayoutOnNewNode = async function (newNode, parentNode) {
   let myId = newNode.attr("id");
   let parentId = parentNode.attr("id");
   if (AdvOps.globalTreeMap.size < 1) {
@@ -644,7 +644,7 @@ AdvOps.autoLayoutOnNewNode = async function(newNode, parentNode) {
  *
  * jqFrom - a node from which the connections to be hiddden
  */
-AdvOps.hideConnection = async function(jqFrom) {
+AdvOps.hideConnection = async function (jqFrom) {
   await AdvOps.toggleConnectionVisibility(jqFrom, false);
 };
 
@@ -653,7 +653,7 @@ AdvOps.hideConnection = async function(jqFrom) {
  *
  * jqFrom - a node from which the connections to be shown
  */
-AdvOps.showConnection = async function(jqFrom) {
+AdvOps.showConnection = async function (jqFrom) {
   await AdvOps.toggleConnectionVisibility(jqFrom, true);
 };
 
@@ -662,7 +662,7 @@ AdvOps.showConnection = async function(jqFrom) {
  *
  * jqFrom - a node from which the visibility of the connections to be toggled
  */
-AdvOps.toggleConnectionVisibility = async function(jqFrom, visible) {
+AdvOps.toggleConnectionVisibility = async function (jqFrom, visible) {
   let myId = jqFrom.attr("id");
   let toIds = KFK.stringToArray(jqFrom.attr("linkto"));
   toIds.forEach((toId) => {
