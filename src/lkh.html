@@ -5,7 +5,7 @@
     <title>Hyper Automation Service</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no maximum-scale=1.0, user-scalable=no"">
+        content="width=device-width, initial-scale=1, shrink-to-fit=no maximum-scale=1.0, user-scalable=no" />
     <link rel=" shortcut icon" href="./favicon.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.17.3/dist/bootstrap-vue.min.css">
@@ -42,21 +42,55 @@
                 <b-list-group-item href="#" class="d-flex align-items-center toolbox"
                     v-on:click="setMode('pointer', $event);" v-b-popover.hover.right title="点选"
                     :active="toolActiveState['pointer']">
-                    <b-img :src="getImageSrc('pointer')" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <b-img :src="assets['pointer.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
                     <div class="shortcutkey">ESC</div>
                 </b-list-group-item>
                 <b-list-group-item href="#" class="d-flex align-items-center toolbox"
-                    v-on:click="setMode('textblock', $event);"
-                    v-on:mousedown="KFK.onToolboxMouseDown('textblock', $event)"
-                    v-on:mouseup="KFK.onToolboxMouseUp('textblock', $event)" v-b-popover.hover.right title="复合文本-可拖放"
-                    :active="toolActiveState['textblock']">
-                    <b-img :src="getImageSrc('textblock')" fluid alt="" scale="2" class="cocotool"></b-img>
+                    v-on:click="setMode('ACTION', $event);" v-on:mousedown="KFK.onToolboxMouseDown('ACTION', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('ACTION', $event)" v-b-popover.hover.right title="活动"
+                    :active="toolActiveState['ACTION']">
+                    <b-img :src="assets['ACTION.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
                     <div class="shortcutkey">1</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('INFORM', $event);" v-on:mousedown="KFK.onToolboxMouseDown('INFORM', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('INFORM', $event)" v-b-popover.hover.right title="通知"
+                    :active="toolActiveState['INFORM']">
+                    <b-img :src="assets['INFORM.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">2</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('SCRIPT', $event);" v-on:mousedown="KFK.onToolboxMouseDown('SCRIPT', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('SCRIPT', $event)" v-b-popover.hover.right title="程序"
+                    :active="toolActiveState['SCRIPT']">
+                    <b-img :src="assets['SCRIPT.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">3</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('SUB', $event);" v-on:mousedown="KFK.onToolboxMouseDown('SUB', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('SUB', $event)" v-b-popover.hover.right title="子流程"
+                    :active="toolActiveState['SUB']">
+                    <b-img :src="assets['SUB.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">3</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('AND', $event);" v-on:mousedown="KFK.onToolboxMouseDown('AND', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('AND', $event)" v-b-popover.hover.right title="并"
+                    :active="toolActiveState['AND']">
+                    <b-img :src="assets['AND.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">3</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('OR', $event);" v-on:mousedown="KFK.onToolboxMouseDown('OR', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('OR', $event)" v-b-popover.hover.right title="或"
+                    :active="toolActiveState['OR']">
+                    <b-img :src="assets['OR.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">3</div>
                 </b-list-group-item>
                 <b-list-group-item href="#" class="d-flex align-items-center toolbox"
                     v-on:click="setMode('connect', $event);" placeable="none" v-b-popover.hover.right title="连接"
                     :active="toolActiveState['connect']">
-                    <b-img :src="getImageSrc('connect')" fluid alt="" scale="2" class="cocotool" id='tool_connect'>
+                    <b-img :src="assets['connect.svg']" fluid alt="" scale="2" class="cocotool" id='tool_connect'>
                     </b-img>
                     <div class="shortcutkey">J</div>
                 </b-list-group-item>

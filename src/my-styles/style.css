@@ -1441,19 +1441,6 @@ select:focus {
     justify-content: center;
 }
 
-#keepLog {
-    position: absolute;
-    display: flex;
-    width: 100%;
-    bottom: 0px;
-    left: 0px;
-    margin: 5px;
-    background-color: #eeeeee69;
-    border: 1px solid #aaa;
-    z-index: 101;
-    align-items: center;
-    justify-content: center;
-}
 
 #minimap {
     position: absolute;
@@ -2400,40 +2387,68 @@ a:hover {
     background-color: #d2e1ef;
 }
 
-.node.START{
+.node {
     position: absolute;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #969696;
+    box-shadow: inset 0px 0px 0px 1px #969696;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.node p{
+    position: absolute;
+    margin-bottom: 0px; display:block; 
+    white-space: nowrap;
+    bottom: -20px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+.node code{
+    display: none;
+}
+.node.START{
     left: 100px;
     top: 100px;
-    background-color: red;
-    width: 100px;
-    height: 100px;
+    background-image: url("../images/START.svg");
 }
 
 .node.ACTION{
-    position: absolute;
     left: 300px;
     top: 100px;
-    background-color: red;
-    width: 100px;
-    height: 100px;
+    background-image: url("../images/ACTION.svg");
 }
-
-.node.SCRIPT{
-    position: absolute;
+.node.INFORM{
     left: 400px;
     top: 300px;
-    background-color: red;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
+    background-image: url("../images/INFORM.svg");
+}
+.node.SCRIPT{
+    left: 400px;
+    top: 300px;
+    background-image: url("../images/SCRIPT.svg");
+}
+.node.SUB{
+    left: 400px;
+    top: 300px;
+    background-image: url("../images/SUB.svg");
+}
+.node.AND{
+    left: 400px;
+    top: 300px;
+    background-image: url("../images/AND.svg");
+}
+.node.OR{
+    left: 400px;
+    top: 300px;
+    background-image: url("../images/OR.svg");
 }
 
+
+
 .node.END{
-    position: absolute;
     left: 800px;
     top: 300px;
-    background-color: red;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
+    background-image: url("../images/END.svg");
 }

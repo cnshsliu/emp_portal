@@ -1,4 +1,14 @@
 //import events from "events";
+import ACTION_svg from "url:./images/ACTION.svg";
+import INFORM_svg from "url:./images/INFORM.svg";
+import SCRIPT_svg from "url:./images/SCRIPT.svg";
+import START_svg from "url:./images/START.svg";
+import END_svg from "url:./images/END.svg";
+import AND_svg from "url:./images/AND.svg";
+import SUB_svg from "url:./images/SUB.svg";
+import OR_svg from "url:./images/OR.svg";
+import connect_svg from "url:./images/connect.svg";
+import pointer_svg from "url:./images/pointer.svg";
 import "./scss/custom.scss";
 import KFK from "./KFK";
 import messages from "./i18messages";
@@ -18,6 +28,18 @@ const i18n = new VueI18n({
 const app = new Vue({
   i18n: i18n,
   data: {
+    assets: {
+      "ACTION.svg": ACTION_svg,
+      "SCRIPT.svg": SCRIPT_svg,
+      "INFORM.svg": INFORM_svg,
+      "START.svg": START_svg,
+      "END.svg": END_svg,
+      "AND.svg": AND_svg,
+      "SUB.svg": SUB_svg,
+      "OR.svg": OR_svg,
+      "connect.svg": connect_svg,
+      "pointer.svg": pointer_svg,
+    },
     goodsSearchQ: "",
     goodsToBuy: {
       name: "",
@@ -192,30 +214,13 @@ const app = new Vue({
     ],
     toolActiveState: {
       pointer: true,
-      tip: false,
-      blanket: false,
-      p8star: false,
-      pin: false,
-      text: false,
-      yellowtip: false,
-      line: false,
-      textblock: false,
-      richtext: false,
-      md: false,
-      lock: false,
-      minimap: false,
+      ACTION: false,
+      INFORM: false,
+      SCRIPT: false,
+      SUB: false,
+      AND: false,
+      OR: false,
       connect: false,
-      material: false,
-      clean: false,
-      brain: false,
-      todo: false,
-      chat: false,
-      draw: false,
-      interlink: false,
-      comment: false,
-      freehand: false,
-      clearfreehand: false,
-      jump: false,
     },
     docNavTabIndex: 0,
     show: {
@@ -686,6 +691,7 @@ const app = new Vue({
         autoLayout: true,
         docAcl: 0,
         drawOnTop: true,
+        simpleLineMode: true,
       },
       dragToCreate: true,
       lineToggleMode: false,
@@ -777,6 +783,7 @@ const app = new Vue({
         docName: "",
       },
     },
+
   },
   computed: {
     prjListOptions() {
@@ -905,10 +912,6 @@ KFK.NodeController = NodeController;
 window.Buffer = window.Buffer || require("buffer").Buffer;
 KFK.APP = app;
 app.model.endpoint = KFK.config.ws_server.endpoint.label;
-app.model.column = KFK.column;
-
-console.log("app.model.column=", app.model.column);
-
 window.addEventListener(
   "dragenter",
   function (e) {
@@ -964,4 +967,3 @@ window.addEventListener("drop", async function (e) {
 
 KFK.init();
 KFK.APP = app;
-
