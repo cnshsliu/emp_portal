@@ -2,6 +2,7 @@
 import ACTION_svg from "url:./images/ACTION.svg";
 import INFORM_svg from "url:./images/INFORM.svg";
 import SCRIPT_svg from "url:./images/SCRIPT.svg";
+import TIMER_svg from "url:./images/TIMER.svg";
 import START_svg from "url:./images/START.svg";
 import END_svg from "url:./images/END.svg";
 import AND_svg from "url:./images/AND.svg";
@@ -31,6 +32,7 @@ const app = new Vue({
     assets: {
       "ACTION.svg": ACTION_svg,
       "SCRIPT.svg": SCRIPT_svg,
+      "TIMER.svg": TIMER_svg,
       "INFORM.svg": INFORM_svg,
       "START.svg": START_svg,
       "END.svg": END_svg,
@@ -217,6 +219,7 @@ const app = new Vue({
       ACTION: false,
       INFORM: false,
       SCRIPT: false,
+      TIMER: false,
       SUB: false,
       AND: false,
       OR: false,

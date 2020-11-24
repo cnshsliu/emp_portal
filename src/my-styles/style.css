@@ -1448,10 +1448,10 @@ select:focus {
     height: 120px;
     /* 20% of A4*/
     bottom: 5px;
-    right: 5px;
+    left: 5px;
     background-color: #eee;
     border: 1px solid #aaa;
-    opacity: 0.9;
+    opacity: 0.7;
     z-index: 10000000;
 }
 
@@ -2396,6 +2396,9 @@ a:hover {
     box-sizing: border-box;
     border-radius: 15px;
 }
+.node:hover {
+    background-color: rgba(255, 255, 0, 0.8);
+}
 
 .node p{
     position: absolute;
@@ -2406,6 +2409,9 @@ a:hover {
     transform: translate(-50%, 0%);
 }
 .node code{
+    display: none;
+}
+.node .kvars{
     display: none;
 }
 .node.START{
@@ -2428,6 +2434,11 @@ a:hover {
     left: 400px;
     top: 300px;
     background-image: url("../images/SCRIPT.svg");
+}
+.node.TIMER{
+    left: 400px;
+    top: 300px;
+    background-image: url("../images/TIMER.svg");
 }
 .node.SUB{
     left: 400px;

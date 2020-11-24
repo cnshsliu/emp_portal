@@ -67,6 +67,13 @@
                     <div class="shortcutkey">3</div>
                 </b-list-group-item>
                 <b-list-group-item href="#" class="d-flex align-items-center toolbox"
+                    v-on:click="setMode('TIMER', $event);" v-on:mousedown="KFK.onToolboxMouseDown('TIMER', $event)"
+                    v-on:mouseup="KFK.onToolboxMouseUp('TIMER', $event)" v-b-popover.hover.right title="定时器"
+                    :active="toolActiveState['TIMER']">
+                    <b-img :src="assets['TIMER.svg']" fluid alt="" scale="2" class="cocotool"></b-img>
+                    <div class="shortcutkey">3</div>
+                </b-list-group-item>
+                <b-list-group-item href="#" class="d-flex align-items-center toolbox"
                     v-on:click="setMode('SUB', $event);" v-on:mousedown="KFK.onToolboxMouseDown('SUB', $event)"
                     v-on:mouseup="KFK.onToolboxMouseUp('SUB', $event)" v-b-popover.hover.right title="子流程"
                     :active="toolActiveState['SUB']">
