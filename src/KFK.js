@@ -702,40 +702,12 @@ KFK.procLinkNode = function (shiftKey, text) {
   KFK.cancelAlreadySelected();
   KFK.clearNodeMessage();
   KFK.buildConnectionBetween(KFK.linkPosNode[0], KFK.linkPosNode[1]);
-  KFK.redrawLinkLines(KFK.linkPosNode[0], "new child created", true);
+  KFK.redrawLinkLines(KFK.linkPosNode[0], "connect", false);
   //看两个节点的Linkto属性，在添加一个连接线后有没有什么变化，
   //如果有变化，就上传U， 如果没变化，就不用U
   //没有变化的情况：之前就有从linkPosNode[0]到 linkPosNode[1]的链接存在
   //有变化的情况：1. 之前不存在； 2. 之前存在方向相反的链接，从linkPosNode[1]到linkPosNode[0]的
   //以上两种情况中，1会只导致只U第一个； 2会导致U；两端两个节点
-  let oldNode0 = KFK.linkPosNode[0].clone();
-  let oldNode1 = KFK.linkPosNode[1].clone();
-  let tmp1 = KFK.linkPosNode[0].attr("linkto");
-  let tmp2 = KFK.linkPosNode[1].attr("linkto");
-  let tmp3 = KFK.linkPosNode[0].attr("linkto");
-  let tmp4 = KFK.linkPosNode[1].attr("linkto");
-  if (tmp1 !== tmp3) {
-    KFK.syncNodePut(
-      "U",
-      KFK.linkPosNode[0].clone(),
-      "connect nodes",
-      oldNode0,
-      false,
-      0,
-      1
-    );
-  }
-  if (tmp2 !== tmp4) {
-    KFK.syncNodePut(
-      "U",
-      KFK.linkPosNode[1].clone(),
-      "connect nodes",
-      oldNode1,
-      false,
-      0,
-      1
-    );
-  }
 
   if (!shiftKey) {
     KFK.linkPosNode.splice(0, 2);
@@ -914,18 +886,22 @@ KFK.procDrawShape = function (shiftKey) {
   }
 };
 
-KFK.addLinkTo = function (jq1, idToAdd) {
-  let linksArr = KFK.stringToArray(jq1.attr("linkto"));
-  //过滤掉不存在的节点
-  // linksArr = linksArr.filter((aId) => {
-  //   return ($(`#${aId}`).length > 0) && aId !== jq1.attr("id");
-  // })
-  //把新的对手节点放进去
-  if (linksArr.indexOf(idToAdd) < 0) {
-    linksArr.push(idToAdd);
+KFK.addLinkTo = function (jq1, jq2) {
+  let id1 = jq1.attr("id");
+  let id2 = jq2.attr("id");
+  let filter = `.link[from="${id1}"][to="${id2}"]`;
+  console.log(filter);
+  let links = KFK.tpl.find(filter);
+  if (links.length > 0) {
+    return;
+  } else {
+    KFK.tpl.append(`<div class="link" from="${id1}" to="${id2}"></div>`);
   }
-  jq1.attr("linkto", linksArr.join(","));
 };
+KFK.removeLinkTo = function (jq1, jq2) {
+  let id1 = jq1.attr("id");
+  let id2 = jq2.attr("id");
+}
 /**
  * 建立两个节点之间的连接
  * 建立从jq1到jq2的连接，会同时删除反方向从jq2到jq1的连接
@@ -935,8 +911,8 @@ KFK.addLinkTo = function (jq1, idToAdd) {
  *
  */
 KFK.buildConnectionBetween = function (jq1, jq2) {
-  KFK.addLinkTo(jq1, jq2.attr("id"));
-  KFK.removeLinkTo(jq2, jq1.attr("id"));
+  KFK.addLinkTo(jq1, jq2);
+  KFK.removeLinkTo(jq2, jq1);
 };
 
 /**
@@ -5796,6 +5772,7 @@ KFK.appDataToNode = function (reason) {
       dirtyCount += 1;
     }
   } else if (jqDIV.hasClass("SCRIPT")) {
+    dirtyCount += KFK.setNodeId(jqDIV, KFK.APP.node.SCRIPT.id);
     dirtyCount += KFK.setNodeLabel(jqDIV, KFK.APP.node.SCRIPT.label);
     let appData_code = KFK.APP.node.SCRIPT.code.trim();
     let codeInBase64 = "";
@@ -5891,6 +5868,13 @@ KFK.setNodeId = function (jqDIV, id) {
     jqDIV.attr("id", id.trim());
     console.log("Dirty: id changed");
     isDirty = true;
+  }
+  if (IsBlank(id.trim())) {
+    if (IsBlank(jqDIV.attr("id").trim())) {
+      jqDIV.attr("id", KFK.myuid());
+      console.log("Dirty: id changed");
+      isDirty = true;
+    }
   }
   return isDirty ? 1 : 0;
 }

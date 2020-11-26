@@ -219,6 +219,8 @@
                         <b-row class="mb-5 node_title">
                             SCRIPT
                         </b-row>
+                        <b-row>Node Id:</b-row>
+                        <b-row>{{node.SCRIPT.id}}</b-row>
                         <b-row>Node Label:</b-row>
                         <b-row>{{node.SCRIPT.label}}</b-row>
                         <b-row>Code:</b-row>
@@ -235,6 +237,11 @@
                             SCRIPT
                         </b-row>
                         <form ref="form">
+                            <b-form-group :state="state.node.SCRIPT.id" label="Node ID" label-for="input_node_SCRIPT_id"
+                                invalid-feedback="Label is required">
+                                <b-form-input id="input_node_SCRIPT_id" v-model="node.SCRIPT.id" required>
+                                </b-form-input>
+                            </b-form-group>
                             <b-form-group :state="state.node.SCRIPT.label" label="Label"
                                 label-for="input_node_SCRIPT_label" invalid-feedback="Label is required">
                                 <b-form-input id="input_node_SCRIPT_label" v-model="node.SCRIPT.label" required>
