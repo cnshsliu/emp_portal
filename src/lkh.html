@@ -28,11 +28,6 @@
                 <div id="C3" v-on:focus="KFK.C3GotFocus" v-on:blur="KFK.C3Blur" v-on:mouseover="KFK.focusOnC3">
                 </div>
                 <div id="selectingrect" class="selectingrect"></div>
-                <div id="modeIndicator" style="position:absolute; top: 0px; left: 0px; display: none; ">
-                    <img id="modeIndicatorImg" :src="getImageSrc('pointer')" style='width: 18px; height: 18px;' />
-                    <div id="modeIndicatorDiv" style='width: 18px; height: 18px;'></div>
-                </div>
-                <img id="linetransformer" class="noshow" :src="getImageSrc('linetransformer')">
             </div>
         </div>
 
@@ -104,10 +99,260 @@
 
             </b-list-group>
         </div>
-        <div id="minimap" class="padlayout spaceToHide">
+        <div id="rightPanel" class="bg-white padlayout spaceToHide" v-on:click="KFK.clickOnRightPanel">
+            <div id="prop_START" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            Template
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            Template
+                        </b-row>
+                        <form ref="form">
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_ACTION" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            ACTION
+                        </b-row>
+                        <b-row>
+                            ID: {{node.ACTION.id}}
+                        </b-row>
+                        <b-row>
+                            LABEL: {{node.ACTION.label}}
+                        </b-row>
+                        <b-row>
+                            ROLE: {{node.ACTION.role}}
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            ACTION
+                        </b-row>
+                        <form ref="form">
+                            <b-form-group :state="state.node.ACTION.id" label="Id" label-for="input_node_ACTION_id"
+                                invalid-feedback="Id is required">
+                                <b-form-input id="input_node_ACTION_id" v-model="node.ACTION.id" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.ACTION.label" label="Label"
+                                label-for="input_node_ACTION_label" invalid-feedback="Label is required">
+                                <b-form-input id="input_node_ACTION_label" v-model="node.ACTION.label" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.ACTION.role" label="Role"
+                                label-for="input_node_ACTION_role" invalid-feedback="Label is required">
+                                <b-form-input id="input_node_ACTION_role" v-model="node.ACTION.role" required>
+                                </b-form-input>
+                            </b-form-group>
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_INFORM" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            INFORM
+                        </b-row>
+                        <b-row>Node Label:</b-row>
+                        <b-row>{{node.INFORM.label}}</b-row>
+                        <b-row>Recipient Role:</b-row>
+                        <b-row>{{node.INFORM.role}}</b-row>
+                        <b-row>Subject:</b-row>
+                        <b-row>{{node.INFORM.subject}}</b-row>
+                        <b-row>Content:</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.INFORM.content}}
+                            </pre>
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            INFORM
+                        </b-row>
+                        <form ref="form">
+                            <b-form-row> ID </b-form-row>
+                            <b-form-row>{{node.INFORM.id}}</b-form-row>
+                            <b-form-group :state="state.node.INFORM.label" label="Node Label"
+                                label-for="input_node_INFORM_label" invalid-feedback="Subject is required">
+                                <b-form-input id="input_node_INFORM_label" v-model="node.INFORM.label" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.INFORM.role" label="Recipient Role"
+                                label-for="input_node_INFORM_role" invalid-feedback="Role is required">
+                                <b-form-input id="input_node_INFORM_role" v-model="node.INFORM.role" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.INFORM.subject" label="Subject"
+                                label-for="input_node_INFORM_subject" invalid-feedback="Subject is required">
+                                <b-form-input id="input_node_INFORM_subject" v-model="node.INFORM.subject" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.INFORM.content" label="Content"
+                                label-for="input_node_INFORM_content" invalid-feedback="Content is required">
+                                <b-form-textarea id="input_node_INFORM_content" v-model="node.INFORM.content" rows="20"
+                                    no-auto-shrink>
+                                </b-form-textarea>
+                            </b-form-group>
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_SCRIPT" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            SCRIPT
+                        </b-row>
+                        <b-row>Node Label:</b-row>
+                        <b-row>{{node.SCRIPT.label}}</b-row>
+                        <b-row>Code:</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.SCRIPT.code}}
+                            </pre>
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            SCRIPT
+                        </b-row>
+                        <form ref="form">
+                            <b-form-group :state="state.node.SCRIPT.label" label="Label"
+                                label-for="input_node_SCRIPT_label" invalid-feedback="Label is required">
+                                <b-form-input id="input_node_SCRIPT_label" v-model="node.SCRIPT.label" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.SCRIPT.code" label="Code"
+                                label-for="input_node_SCRIPT_code" invalid-feedback="Code is required">
+                                <b-form-textarea id="input_node_SCRIPT_code" v-model="node.SCRIPT.code" rows="20"
+                                    no-auto-shrink>
+                                </b-form-textarea>
+                            </b-form-group>
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_TIMER" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            TIMER
+                        </b-row>
+                        <b-row>Node Label:</b-row>
+                        <b-row>{{node.TIMER.label}}</b-row>
+                        <b-row>Code:</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.TIMER.code}}
+                            </pre>
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            TIMER
+                        </b-row>
+                        <form ref="form">
+                            <b-form-group :state="state.node.TIMER.label" label="Label"
+                                label-for="input_node_TIMER_label" invalid-feedback="Label is required">
+                                <b-form-input id="input_node_TIMER_label" v-model="node.TIMER.label" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.TIMER.code" label="Code" label-for="input_node_TIMER_code"
+                                invalid-feedback="Code is required">
+                                <b-form-textarea id="input_node_TIMER_code" v-model="node.TIMER.code" rows="1"
+                                    no-auto-shrink>
+                                </b-form-textarea>
+                            </b-form-group>
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_SUB" class="prop_form nodisplay">
+                <div class="view prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            SUB
+                        </b-row>
+                        <b-row>node ID:</b-row>
+                        <b-row>{{node.SUB.id}}</b-row>
+                        <b-row>Node Label:</b-row>
+                        <b-row>{{node.SUB.label}}</b-row>
+                        <b-row>Sub ID:</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.SUB.sub}}
+                            </pre>
+                        </b-row>
+                    </b-container>
+                </div>
+                <div class="edit prop_section flex">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title text-center">
+                            SUB
+                        </b-row>
+                        <form ref="form">
+                            <b-form-group :state="state.node.SUB.id" label="node ID" label-for="input_node_SUB_id"
+                                invalid-feedback="ID is required">
+                                <b-form-input id="input_node_SUB_id" v-model="node.SUB.id" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.SUB.label" label="Label" label-for="input_node_SUB_label"
+                                invalid-feedback="Label is required">
+                                <b-form-input id="input_node_SUB_label" v-model="node.SUB.label" required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group :state="state.node.SUB.sub" label="Sub ID" label-for="input_node_SUB_sub"
+                                invalid-feedback="Code is required">
+                                <b-form-input id="input_node_SUB_sub" v-model="node.SUB.sub" required> </b-form-input>
+                            </b-form-group>
+                        </form>
+                    </b-container>
+                </div>
+            </div>
+            <div id="prop_AND" class="prop_form nodisplay">
+                <b-container class="text-center">
+                    <b-row class="mb-5 node_title text-center">
+                        AND
+                    </b-row>
+                    <b-row>
+                        All previous tasks should be done before continueing.
+                    </b-row>
+                </b-container>
+            </div>
+            <div id="prop_OR" class="prop_form nodisplay">
+                <b-container class="text-center">
+                    <b-row class="mb-5 node_title text-center">
+                        OR
+                    </b-row>
+                    <b-row>
+                        Any previous tasks should be done before continueing.
+                    </b-row>
+                </b-container>
+            </div>
+            <b-icon icon="plus" rotate="45" id="close_button" font-scale="1.5" v-on:click="KFK.closeProperties(null)">
+            </b-icon>
         </div>
-        <div id="mdNote" class="nodisplay">
-            <textarea id='ta_mdnote' style='width:100%; height:100%; resize:none;'></textarea>
+        <div id="minimap" class="padlayout spaceToHide">
         </div>
     </div>
 </body>

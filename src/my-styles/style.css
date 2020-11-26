@@ -568,24 +568,6 @@ input::placeholder {
     z-index: 999999999;
 }
 
-#rightPanel {
-    padding: 0px;
-    background: #ffffff;
-    box-shadow: 0 4px 8px 0 #000000cc, 0 6px 20px 0 #000000cc;
-    position: absolute;
-    top: 100px;
-    right: 5px;
-    width: 240px;
-    height: calc(100vh - 250px);
-    border: 1px solid #0000004c;
-}
-
-#rightPanel .tab-content {
-    position: absolute;
-    height: calc(100% - 60px);
-    overflow-y: scroll;
-}
-
 .stayright {
     text-align: right;
     justify-content: right;
@@ -2404,11 +2386,11 @@ a:hover {
     position: absolute;
     margin-bottom: 0px; display:block; 
     white-space: nowrap;
-    bottom: -20px;
+    bottom: -22px;
     left: 50%;
     transform: translate(-50%, 0%);
 }
-.node code{
+.node code, .node.INFORM subject,  .node.INFORM content{
     display: none;
 }
 .node .kvars{
@@ -2456,10 +2438,26 @@ a:hover {
     background-image: url("../images/OR.svg");
 }
 
-
-
 .node.END{
     left: 800px;
     top: 300px;
     background-image: url("../images/END.svg");
+}
+
+#rightPanel {
+    padding: 0px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px 0 #000000cc, 0 6px 20px 0 #000000cc;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 250px;
+    height: 100vh;
+    border: 1px solid #0000004c;
+}
+
+#rightPanel #close_button{
+    position: absolute;
+    top: 0px;
+    right: 2px;
 }

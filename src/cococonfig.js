@@ -54,6 +54,7 @@ const config = {
     ACTION: {edittable: true, resizable: false, },
     INFORM: {edittable: true, resizable: false, },
     SCRIPT: {edittable: true, resizable: false, },
+    TIMER: {edittable: true, resizable: false, },
     SUB: {edittable: true, resizable: false, },
     AND: {edittable: true, resizable: false, },
     OR: {edittable: true, resizable: false, },
