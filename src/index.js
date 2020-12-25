@@ -1,8 +1,9 @@
 //import events from "events";
 //import "./scss/custom.scss";
+import Sanddance from "./components/sanddance.vue";
 const app = new Vue({
   data: {},
-  components: {},
+  components: {Sanddance},
   computed: {},
   methods: {
     gotoSignin() {

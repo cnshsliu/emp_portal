@@ -42,7 +42,7 @@
 }
 
 .topbackground {
-  background-image: url("https://mlib.liuzijin.com/frontend/images/space.jpeg");
+  background-image: url("http://localhost:8191/frontend/images/space.jpeg");
   background-size: 100% auto;
 }
 .topbackground img {
@@ -59,7 +59,7 @@
   width: 100%;
   height: 80px;
   z-index: -100;
-  background-image: url("https://mlib.liuzijin.com/frontend/images/space.jpeg");
+  background-image: url("http://localhost:8191/frontend/images/space.jpeg");
   background-size: 100% 80px;
 }
 .topbackground2 img {

@@ -1,6 +1,11 @@
 import Client from "./tools/client";
 const app = new Vue({
   data: {
+    importForm: {
+      show: false,
+      tplid: '',
+      file1: null,
+    },
     form: {
       email: "",
       name: "",
@@ -38,6 +43,9 @@ const app = new Vue({
     tpl_edit(aTpl) {
       window.location.href = "/lkh.html?tplid=" + encodeURI(aTpl.tplid) + "&mode=edit";
     },
+    tpl_try(aTpl) {
+      window.location.href = "/try.html?tplid=" + encodeURI(aTpl.tplid);
+    },
     tpl_rename(aTpl) {
       console.log("Rename " + aTpl._id);
       this.inputName = aTpl.tplid;
@@ -47,7 +55,6 @@ const app = new Vue({
       this.$root.$emit('bv::show::modal', 'modal-input-name');
     },
     tpl_copy(aTpl) {
-      console.log("Copy " + aTpl._id);
       setTimeout(async () => {
         await Client.makeCopyOfTemplate(aTpl._id);
         app.templates = await Client.listTemplate();
@@ -87,6 +94,11 @@ const app = new Vue({
       this.inputNameTitle = "The template name is:";
       this.$root.$emit('bv::show::modal', 'modal-input-name');
     },
+    tpl_export(aTpl) {
+      setTimeout(async () => {
+        Client.exportTemplate(aTpl.tplid);
+      }, 0);
+    },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity()
       this.inputNameState = valid
@@ -96,6 +108,19 @@ const app = new Vue({
       this.inputName = ''
       this.inputNameState = null
     },
+
+    handleUpload() {
+      console.log("Upload");
+    },
+
+    async tpl_import() {
+      if (this.importForm.file1) {
+        let ret = await Client.importTemplateXML(this.importForm.tplid, this.importForm.file1);
+        console.log(ret);
+        this.list_refresh();
+      }
+    },
+
     handleOk(bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault()

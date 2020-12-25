@@ -48,9 +48,24 @@
                 manage templates on this page, click the IDs of exiting templates to find more.
             </b-card-text>
             <b-button variant="success" @click="tpl_create">Design a new template</b-button>
+            <b-button variant="success" @click="importForm.show=true">Import Template</b-button>
             <b-button variant="success" @click="list_refresh">Refresh</b-button>
         </b-card>
         <b-container class="mt-3">
+            <form v-if="importForm.show">
+                <b-input-group prepend=" Template ID">
+                    <b-form-input id="tplid-input" v-model="importForm.tplid"
+                        placeholder="Will use the ID specified in template file if blank">
+                    </b-form-input>
+                </b-input-group>
+                <b-input-group prepend="Upload File: ">
+                    <b-form-file v-model="importForm.file1" :state="Boolean(importForm.file1)"
+                        placeholder="Choose a file or drop it here..." accept=".xml"
+                        drop-placeholder="Drop file here...">
+                    </b-form-file>
+                    <b-button variant="primary" @click="tpl_import()">Import</b-button>
+                </b-input-group>
+            </form>
             <b-table striped hover id="template-table" :items="templates" :per-page="perPage"
                 :current-page="currentTemplatePage" :fields="templateFields">
                 <template v-slot:cell(tplid)="aObj">
@@ -63,6 +78,8 @@
                         </template>
                         <b-dropdown-item @click="tpl_view(aObj.item)">查看</b-dropdown-item>
                         <b-dropdown-item @click="tpl_edit(aObj.item)">编辑</b-dropdown-item>
+                        <b-dropdown-item @click="tpl_try(aObj.item)">试运行</b-dropdown-item>
+                        <b-dropdown-item @click="tpl_export(aObj.item)">导出</b-dropdown-item>
                         <b-dropdown-item @click="tpl_rename(aObj.item)">重命名</b-dropdown-item>
                         <b-dropdown-item @click="tpl_copy(aObj.item)">复制</b-dropdown-item>
                         <b-dropdown-item @click="tpl_delete(aObj.item)">删除</b-dropdown-item>
@@ -76,9 +93,6 @@
                 </b-pagination>
             </div>
         </b-container>
-        <div class="bg-dark">
-            hello
-        </div>
 
         <section id="footer">
             <b-container class="mb-3 text-center">

@@ -1,6 +1,10 @@
 const axios = require("axios").default;
+const uuidv4 = require("uuid/v4");
 
 const Client = {
+    getId: function () {
+        return uuidv4();
+    },
     hasValue: function (obj) {
         if (obj === undefined) return false;
         if (obj === null) return false;
@@ -46,6 +50,7 @@ const Client = {
         return ret.data;
     },
     _post: async function (uri, payload) {
+        console.log(payload);
         let res = await axios.post(uri, payload, Client.axiosOptions);
         if (this.isEmpty(res.data)) {
             throw new Error(`API Server return ${res.data}`);
@@ -54,6 +59,9 @@ const Client = {
             throw new Error(res.data.errMsg);
         }
         return res;
+    },
+    _download: async function (uri, payload) {
+        await axios.post(uri, payload, Client.axiosOptions);
     },
     doGet: async function (uri) {
         let ret = Client._get(uri);
@@ -87,18 +95,65 @@ const Client = {
         return ret.data;
     },
 
-    uploadTemplate: async function (tpl_data) {
-        let ret = await Client._post("/template/upload", {
+    putTemplate: async function (tpl_data) {
+        let ret = await Client._post("/template/put", {
             doc: tpl_data,
         });
         return ret.data;
     },
 
-    downloadTemplate: async function (tpl_id) {
-        let ret = await Client._post("/template/download", {
+    importTemplateXML: async function (tplid, fileObj) {
+        var formData = new FormData();
+        formData.append('tplid', tplid);
+        formData.append('file', fileObj, fileObj.name);
+        let option = Client.axiosOptions;
+        let token = this.getSessionToken();
+        if (token === null) {
+            console.error("No session token in localStorage");
+            return;
+        }
+        option.headers = {
+            "Content-Type": "multipart/form-data",
+            "authorization": token
+        };
+        let res = await axios.post("/template/import", formData, option);
+        return res;
+    },
+
+    readTemplate: async function (tpl_id) {
+        let ret = await Client._post("/template/read", {
             tplid: tpl_id,
         });
         return ret.data;
+    },
+    readWorkflow: async function (wfid) {
+        let ret = await Client._post("/workflow/read", {
+            wfid: wfid,
+        });
+        return ret.data;
+    },
+    exportTemplate: async function (tpl_id) {
+        //拷贝一份option，不影响原option
+        let tmpOption = Client.axiosOptions;
+        //需要设置responseType为blob
+        //原axiosOptions中的responseType为json, 服务端返回的数据如果不是json格式, 数据会变为null
+        tmpOption.responseType = "blob";
+        axios.post("/template/download", {
+            tplid: tpl_id,
+        }, tmpOption).then(response => {
+            //构建这个内部数据的访问url
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            //删除之前添加的临时连接
+            $('.tempLink').remove();
+            //创建一个新的临时连接
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${tpl_id}.xml`); //or any other extension
+            link.setAttribute('class', "tempLink");
+            document.body.appendChild(link);
+            //点击这个临时连接实现内容下载
+            link.click();
+        });
     },
 
     listTemplate: async function () {
@@ -277,13 +332,33 @@ const Client = {
         return ret.data;
     },
 
+    importTeamCSV: async function (teamid, fileObj) {
+        if (this.isEmpty(teamid)) return;
+        var formData = new FormData();
+        formData.append('teamid', teamid);
+        formData.append('file', fileObj, fileObj.name);
+        let option = Client.axiosOptions;
+        let token = this.getSessionToken();
+        if (token === null) {
+            console.error("No session token in localStorage");
+            return;
+        }
+        option.headers = {
+            "Content-Type": "multipart/form-data",
+            "authorization": token
+        };
+        let res = await axios.post("/team/import", formData, option);
+        return res;
+    },
+
     getTeamFullInfo: async function (teamid) {
         let ret = await Client._get(`/team/fullinfo/${teamid}`);
         return ret.data;
     },
 
-    getTeamList: async function () {
-        let ret = await Client._post("/team/list");
+    getTeamList: async function (payload) {
+        payload = payload ? payload : {limit: 1000};
+        ret = await Client._post("/team/list", payload);
         return ret.data;
     },
 
@@ -365,14 +440,29 @@ const Client = {
         return response;
     },
 
+    getSessionToken: function () {
+        if (localStorage) {
+            let token = localStorage.getItem("sessionToken");
+            if (token) {
+                return `Bearer ${token}`;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    },
     setSessionToken: function (token) {
-        if (token)
-            Client.setHeader("authorization", token);
-        else {
+        if (token) {
+            console.log("Client authorization token", token);
+            Client.setHeader("authorization", `Bearer ${token}`);
+        } else {
             if (localStorage) {
                 let token = localStorage.getItem("sessionToken");
-                if (token)
-                    Client.setHeader("authorization", token);
+                if (token) {
+                    Client.setHeader("authorization", `Bearer ${token}`);
+                    console.log("Client authorization token", token);
+                }
             }
         }
     },

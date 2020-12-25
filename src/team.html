@@ -51,6 +51,19 @@
             </b-card-text>
         </b-card>
         <b-container class="mt-3">
+            <form>
+                <b-input-group prepend="Team ID">
+                    <b-form-input id="teamid-input" v-model="importForm.teamid" placeholder="Team ID" required>
+                    </b-form-input>
+                </b-input-group>
+                <b-input-group prepend="Upload CSV: ">
+                    <b-form-file v-model="importForm.file1" :state="Boolean(importForm.file1)"
+                        placeholder="Choose a file or drop it here..." accept=".csv"
+                        drop-placeholder="Drop file here...">
+                    </b-form-file>
+                    <b-button variant="primary" @click="team_import()">Import</b-button>
+                </b-input-group>
+            </form>
             <b-row>
                 <b-col>
                     <b-table striped hover id="obj-table" :items="bobjects" :per-page="perPage"

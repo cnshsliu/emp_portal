@@ -1,6 +1,10 @@
 import Client from "./tools/client";
 const app = new Vue({
   data: {
+    importForm: {
+      teamid: '',
+      file1: null
+    },
     form: {
       email: "",
       name: "",
@@ -51,6 +55,38 @@ const app = new Vue({
     },
 
     team_delete() {
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete', {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then(value => {
+          if (value) {
+            console.log(this.team_inputName);
+            setTimeout(async () => {
+              await Client.deleteTeam(
+                this.team_inputName);
+              await this.refresh_list();
+            }, 0);
+
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    },
+
+    async team_import() {
+      if (this.importForm.file1) {
+        let ret = await Client.importTeamCSV(this.importForm.teamid, this.importForm.file1);
+        this.refresh_list();
+      }
     },
 
     async refresh_list() {

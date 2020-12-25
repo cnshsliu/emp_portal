@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.17.3/dist/bootstrap-vue.min.css">
     <!-- Load Vue followed by BootstrapVue, and BootstrapVueIcons -->
-    <link rel="stylesheet" href="/my-styles/style.css">
+    <link rel="stylesheet" href="./my-styles/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-i18n@8.22.0/dist/vue-i18n.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.17.3/dist/bootstrap-vue.min.js"></script>
@@ -133,6 +133,18 @@
                         <b-row>
                             ROLE: {{node.ACTION.role}}
                         </b-row>
+                        <b-row>KVARS</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.ACTION.kvars}}
+                            </pre>
+                        </b-row>
+                        <b-row>KATTS</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.ACTION.katts}}
+                            </pre>
+                        </b-row>
                     </b-container>
                 </div>
                 <div class="edit prop_section flex">
@@ -156,7 +168,53 @@
                                 <b-form-input id="input_node_ACTION_role" v-model="node.ACTION.role" required>
                                 </b-form-input>
                             </b-form-group>
+                            <b-form-group :state="checkKVarsJson" label="KVARS JSON" label-for="input_node_ACTION_kvars"
+                                invalid-feedback="JSON format error">
+                                <b-form-textarea id="input_node_ACTION_kvars" v-model="node.ACTION.kvars" rows="5"
+                                    no-auto-shrink>
+                                </b-form-textarea>
+                            </b-form-group>
+                            <b-form-group :state="checkKAttsJson" label="KATTS JSON" label-for="input_node_ACTION_katts"
+                                invalid-feedback="JSON format error">
+                                <b-form-textarea id="input_node_ACTION_katts" v-model="node.ACTION.katts" rows="5"
+                                    no-auto-shrink>
+                                </b-form-textarea>
+                            </b-form-group>
                         </form>
+                    </b-container>
+                </div>
+                <div class="wfl prop_section">
+                    <b-container class="text-center">
+                        <b-row class="mb-5 node_title">
+                            ACTION
+                        </b-row>
+                        <b-row>
+                            ID: {{node.ACTION.id}}
+                        </b-row>
+                        <b-row>
+                            STATUS: {{node.ACTION.workitem.status}}
+                        </b-row>
+                        <b-row>
+                            LABEL: {{node.ACTION.label}}
+                        </b-row>
+                        <b-row>
+                            ROLE: {{node.ACTION.role}}
+                        </b-row>
+                        <b-row>
+                            DOER: {{node.ACTION.workitem.doer}}
+                        </b-row>
+                        <b-row>KVARS</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.ACTION.workitem.kvars}}
+                            </pre>
+                        </b-row>
+                        <b-row>KATTS</b-row>
+                        <b-row>
+                            <pre>
+                            {{node.ACTION.workitem.katts}}
+                            </pre>
+                        </b-row>
                     </b-container>
                 </div>
             </div>

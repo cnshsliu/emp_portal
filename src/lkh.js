@@ -43,7 +43,7 @@ const app = new Vue({
       "pointer.svg": pointer_svg,
     },
     node: {
-      ACTION: {id: '', label: '', role: ''},
+      ACTION: {id: '', label: '', role: '', kvars: '{}', katts: '{}', workitem: {status: '', doer: '', kvars: '{}', katts: '{}'}},
       SCRIPT: {id: '', label: '', code: ''},
       INFORM: {id: '', label: '', role: '', subject: '', content: ''},
       TIMER: {id: '', label: '', code: ''},
@@ -120,6 +120,18 @@ const app = new Vue({
 
   },
   computed: {
+    checkKVarsJson() {
+      try {
+        JSON.parse(this.node.ACTION.kvars);
+        return true;
+      } catch (error) {return false;}
+    },
+    checkKAttsJson() {
+      try {
+        JSON.parse(this.node.ACTION.katts);
+        return true;
+      } catch (error) {return false;}
+    }
   },
   methods: {
     async setData(data, key, value) {

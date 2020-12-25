@@ -10,11 +10,12 @@ const app = new Vue({
     showLogout: false,
     bobjects: [],
     objectFields: [
-      {key: '_id', label: 'ID'},
-      {key: 'tplid', label: 'Template'},
-      {key: 'teamid', label: 'Team'},
-      {key: 'starter', label: 'Starter'},
-      {key: 'status', label: 'Status'},
+      {key: '_id', label: 'ID', sortable: true},
+      {key: 'tplid', label: 'Template', sortable: true},
+      {key: 'teamid', label: 'Team', sortable: true},
+      {key: 'starter', label: 'Starter', sortable: true},
+      {key: 'status', label: 'Status', sortable: true},
+      {key: 'createdAt', label: 'StartAt', sortable: true},
     ],
     perPage: 10,
     currentObjectPage: 0,
@@ -32,7 +33,7 @@ const app = new Vue({
   computed: {},
   methods: {
     prc_view(aPrc) {
-      window.location.href = "/designer.html?tplid=" + aPrc._id + "&mode=process";
+      window.location.href = "/lkh.html?tplid=inner&wfid=" + aPrc.wfid + "&mode=wfl";
     },
 
     prc_list_by_order(order) {
